@@ -53,10 +53,10 @@ const App = () => {
       params.delete('search');
     }
 
-
     navigate({ search: params.toString() });
     setPage(1);  
   };
+// only searches from the limited products loaded if ,the searched product is not shown try clicking "Load more" button 
 
   const loadMore = () => {
     setPage((prevPage) => prevPage + 1);
