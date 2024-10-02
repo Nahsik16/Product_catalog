@@ -42,7 +42,7 @@ const productsSlice = createSlice({
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.loading = false;
-        state.products = [...state.products, ...action.payload]; // Append the new batch
+        state.products = action.payload; // Replace the products array
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.loading = false;

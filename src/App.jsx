@@ -93,22 +93,23 @@ const App = () => {
       />
 
       {/* Products List */}
-<div className="products-container">
-  {products
-    .filter((product) => !selectedCategory || product.category === selectedCategory)
-    .map((product) => (
-      <div key={product.id} className="product-card">
-        <img src={product.thumbnail} alt={product.title} />
-        <h3>{product.title}</h3>
-        <p>{product.description}</p>
-        <p><strong>Brand:</strong> {product.brand}</p>
-        <p><strong>Category:</strong> {product.category}</p>
-        <p><strong>Price:</strong> ${product.price}</p>
-        <p><strong>Rating:</strong> {product.rating}</p>
-        <p><strong>Stock:</strong> {product.stock}</p>
+      <div className="products-container">
+        {products
+          .filter((product) => !selectedCategory || product.category === selectedCategory)
+          .filter((product) => !searchQuery || product.title.toLowerCase().includes(searchQuery.toLowerCase()))
+          .map((product) => (
+            <div key={product.id} className="product-card">
+              <img src={product.thumbnail} alt={product.title} />
+              <h3>{product.title}</h3>
+              <p>{product.description}</p>
+             {product.brand ?<p><strong>Brand:</strong> {product.brand}</p> :""}
+              <p><strong>Category:</strong> {product.category}</p>
+              <p><strong>Price:</strong> ${product.price}</p>
+              <p><strong>Rating:</strong> {product.rating}</p>
+              <p><strong>Stock:</strong> {product.stock}</p>
+            </div>
+          ))}
       </div>
-    ))}
-</div>
 
       {/* Load More Button */}
       <button onClick={loadMore}>Load More</button>
