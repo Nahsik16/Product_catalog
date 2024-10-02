@@ -5,7 +5,6 @@ import { fetchProducts } from './store/actions/ProductActions';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './index.css';
 
-// Hook to get query parameters from URL
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
@@ -14,58 +13,51 @@ const App = () => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products.products);
   const categories = useSelector((state) => state.categories.categories);
-  const [page, setPage] = useState(1);  // Track the current page for pagination
+  const [page, setPage] = useState(1);  
 
   const query = useQuery();
   const navigate = useNavigate();
   const selectedCategory = query.get('category');
   const searchQuery = query.get('search');
 
-  // Fetch categories when component mounts
   useEffect(() => {
     dispatch(fetchCategories());
   }, [dispatch]);
 
-  // Automatically fetch products when category, page, or search query changes
   useEffect(() => {
     dispatch(fetchProducts({ category: selectedCategory, page, searchQuery }));
   }, [dispatch, selectedCategory, page, searchQuery]);
 
-  // Handle category change
   const handleCategoryChange = (event) => {
     const category = event.target.value;
     const params = new URLSearchParams(query);
 
-    // Set or remove 'category' in the URL based on user selection
     if (category) {
       params.set('category', category);
     } else {
       params.delete('category');
     }
 
-    // Update URL and reset to page 1 (since it's a new category)
     navigate({ search: params.toString() });
-    setPage(1);  // Reset to first page
+    setPage(1);  
   };
 
-  // Handle search query change
+
   const handleSearchChange = (event) => {
     const search = event.target.value;
     const params = new URLSearchParams(query);
 
-    // Set or remove 'search' in the URL
     if (search) {
       params.set('search', search);
     } else {
       params.delete('search');
     }
 
-    // Update URL and reset to page 1 (since it's a new search)
+
     navigate({ search: params.toString() });
-    setPage(1);  // Reset to first page
+    setPage(1);  
   };
 
-  // Load more products for pagination
   const loadMore = () => {
     setPage((prevPage) => prevPage + 1);
   };
@@ -74,7 +66,6 @@ const App = () => {
     <div className="container">
       <h1>Product Catalog</h1>
 
-      {/* Category Filter */}
       <select onChange={handleCategoryChange} value={selectedCategory || ''}>
         <option value="">All Categories</option>
         {categories.map((category) => (
@@ -84,7 +75,6 @@ const App = () => {
         ))}
       </select>
 
-      {/* Search Box */}
       <input
         type="text"
         placeholder="Search products..."
@@ -92,7 +82,6 @@ const App = () => {
         defaultValue={searchQuery || ''}
       />
 
-      {/* Products List */}
       <div className="products-container">
         {products
           .filter((product) => !selectedCategory || product.category === selectedCategory)
